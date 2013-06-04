@@ -1,5 +1,7 @@
 package com.example.calculator;
 
+import android.util.Log;
+
 public class Model {
 	private int mOper, res;
 	private char op;
@@ -14,35 +16,23 @@ public class Model {
 	}
 	
 	public void calculate(int operand) {
+		Log.d("debug", "value of mOper: " + mOper + "\t value of operand: " + operand);
 		switch(op) {
 			case '!':
 				operand = 0;
 				res = 0;
 				break;
 			case '+':
-				;
-			case '-':
-				;
-			case '*':
-				;
-			case '/':
-				res = operand;
+				res = mOper + operand;
 				break;
-			case '=':
-				switch(op) {
-					case '+':
-						res += operand;
-						break;
-					case '-':
-						res -= operand;
-						break;
-					case '*':
-						res += operand;
-						break;
-					case '/':
-						res /= operand;
-						break;
-				}
+			case '-':
+				res = mOper - operand;
+				break;
+			case '*':
+				res = mOper * operand;
+				break;
+			case '/':
+				res = mOper / operand;
 				break;
 		}
 	}

@@ -24,10 +24,10 @@ public class MainActivity extends Activity {
         		R.id.button6,R.id.button7,R.id.button8,R.id.button9,
         		R.id.buttonADD,R.id.buttonMINUS,R.id.buttonMULTIPLY,R.id.buttonDIVIDE,R.id.buttonClear,R.id.buttonEQUALS};
         
-
+        Controller controller = new Controller(text, model);
         for (int i = 0; i < num.length; i++) {
         	num[i] = (Button)findViewById(ids[i]);
-        	num[i].setOnClickListener(new Controller(text, model));
+        	num[i].setOnClickListener(controller);
         }
 
     }
