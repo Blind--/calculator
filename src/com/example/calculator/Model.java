@@ -1,13 +1,20 @@
 package com.example.calculator;
 
 public class Model {
-	private int operand, res;
+	private int mOper, res;
 	private char op;
 	public Model() {
 		res = 0;
 	}
-	public void calculate(char temp) {
-		switch(temp) {
+	public void setOperator(char ch) {
+		op = ch;
+	}
+	public void setOperand(int oper) {
+		mOper = oper;
+	}
+	
+	public void calculate(int operand) {
+		switch(op) {
 			case '!':
 				operand = 0;
 				res = 0;
@@ -19,9 +26,7 @@ public class Model {
 			case '*':
 				;
 			case '/':
-				op = temp;
-				operand = res;
-				res = 0;
+				res = operand;
 				break;
 			case '=':
 				switch(op) {
@@ -42,6 +47,6 @@ public class Model {
 		}
 	}
 	public String showResult() {
-		return ((Integer)res).toString();
+		return res + "";
 	}
 }
