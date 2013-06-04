@@ -34,8 +34,8 @@ public class MainActivity extends Activity {
     				CharSequence click = ((Button)v).getText();
     				text.setText(click);
         		    
-        		    if (isInteger(click.toString()))
-        		    	hist.add(Integer.parseInt(click.toString()));
+//        		    if (isInteger(click.toString()))
+//        		    	hist.add(Integer.parseInt(click.toString()));
 
         		    char op = 0;
     		        switch(v.getId()) {
@@ -55,8 +55,8 @@ public class MainActivity extends Activity {
 							op = '/';
 							break;
 						case R.id.buttonEQUALS:
-							first = hist.get(0);
-							sec = hist.get(1);
+//							first = hist.get(0);
+//							sec = hist.get(1);
 							switch(op) {
 								case '+':
 									calculate('+');
