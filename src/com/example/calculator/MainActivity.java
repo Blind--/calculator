@@ -13,6 +13,7 @@ public class MainActivity extends Activity {
 	private Calculator calc;
 	private Integer first, sec;
 	private ArrayList<Integer> hist;
+	private int curr;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,59 +22,49 @@ public class MainActivity extends Activity {
 
         text = (EditText)findViewById(R.id.Row1_ShowInput);
         
-        final Button[] b = new Button[16];
-        final int[] ids = {R.id.button0,R.id.button1,R.id.button2,R.id.button3,R.id.button4,R.id.button5,
-        		R.id.button6,R.id.button7,R.id.button8,R.id.button9,R.id.buttonADD,R.id.buttonMINUS,
-        		R.id.buttonDIVIDE,R.id.buttonMULTIPLY,R.id.buttonClear,R.id.buttonEQUALS};
+        final Button[] num = new Button[10];
+        final Button[] oper = new Button[6];
+        final int[] ids_op = {R.id.buttonADD,R.id.buttonMINUS,R.id.buttonMULTIPLY,R.id.buttonDIVIDE,R.id.buttonClear,R.id.buttonEQUALS};
+        final int[] ids_num = {R.id.button0,R.id.button1,R.id.button2,R.id.button3,R.id.button4,R.id.button5,
+        		R.id.button6,R.id.button7,R.id.button8,R.id.button9};
         
-        
-        for (int i = 0; i < b.length; i++) {
-        	b[i] = (Button)findViewById(ids[i]);
-        	b[i].setOnClickListener(new View.OnClickListener() {
-    			public void onClick(View v) {
-    				CharSequence click = ((Button)v).getText();
-    				text.setText(click);
-        		    
-//        		    if (isInteger(click.toString()))
-//        		    	hist.add(Integer.parseInt(click.toString()));
 
-        		    char op = 0;
-    		        switch(v.getId()) {
-    		        	case R.id.buttonClear:
-    		        		first = 0;
-    		        		sec = 0;
-    		        		break;    		     
-    		        	case R.id.buttonADD:
-							op = '+';
-						case R.id.buttonMINUS:
-							op = '-';
-							break;
-						case R.id.buttonMULTIPLY:
-							op = '*';
-							break;
-						case R.id.buttonDIVIDE:
-							op = '/';
-							break;
-						case R.id.buttonEQUALS:
-//							first = hist.get(0);
-//							sec = hist.get(1);
-							switch(op) {
-								case '+':
-									calculate('+');
-									break;
-								case '-':
-									calculate('-');
-									break;
-								case '*':
-									calculate('*');
-									break;
-								case '/':
-									calculate('/');
-									break;
-							}
-							break;
-    		        }	
-    			}
+        //operators
+        for (int j = 0; j < oper.length; j++) {
+        	oper[j] = (Button)findViewById(ids_op[j]);
+        	oper[j].setOnClickListener(new View.OnClickListener() {
+        		public void onClick(View v) {
+        			curr = Integer.parseInt(text.toString());
+    				text.setText(((Button)v).getText());;
+        		}
+        	});
+        }
+        
+        
+//        switch(v.getId()) {
+//    	case R.id.buttonClear:
+//    		text.setText("");
+//    		break;    		     
+//    	case R.id.buttonADD:
+//			op = '+';
+//		case R.id.buttonMINUS:
+//			op = '-';
+//			break;
+//		case R.id.buttonMULTIPLY:
+//			op = '*';
+//			break;
+//		case R.id.buttonDIVIDE:
+//			op = '/';
+//			break;
+
+        
+        //numbers
+        for (int i = 0; i < num.length; i++) {
+        	num[i] = (Button)findViewById(ids_num[i]);
+        	num[i].setOnClickListener(new View.OnClickListener() {
+    			public void onClick(View v) {
+    				text.append(((Button)v).getText());
+    			}	
     		});
         }
 
@@ -86,28 +77,11 @@ public class MainActivity extends Activity {
         }
         return true;
     }
-    private void calculate(char c) {	
-    	calc = new Calculator(first,sec);
-    	switch(c) {
-			case '+':
-				calc.add();
-				break;
-			case '-':
-				calc.minus();
-				break;
-			case '*':
-				calc.mult();
-				break;
-			case '/':
-				calc.div();
-				break;
-		}
-    	updateDisplay();
-    }
     
-    public void updateDisplay() {
-    	text.setText(calc.toString());
-    }
+    
+//    public void updateDisplay() {
+//    	text.setText(calc.toString());
+//    }
     
     public class Calculator {
     	private int num1, num2;
