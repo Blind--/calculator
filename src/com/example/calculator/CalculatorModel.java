@@ -12,16 +12,16 @@ public class CalculatorModel {
 	public void setOperator(char operator) {
 		mOperator = operator;
 	}
-	public void calculate() {
+	public void calculate(int operand) {
 		switch(mOperator) {
 		case '+':
-			res += mOperand;
+			res = mOperand + operand;
 			break;
 		case '-':
-			res -= mOperand;
+			res = mOperand - operand;
 			break;
 		case '*':
-			res *= mOperand;
+			res = mOperand * operand;
 			break;
 		}
 	}

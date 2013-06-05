@@ -8,15 +8,17 @@ import android.widget.EditText;
 public class InputHandler implements OnClickListener{
 	private EditText mText;
 	private CalculatorModel mMod;
-	private CharSequence display;
+	private char mOp;
 	
 	public InputHandler(EditText e, CalculatorModel m) {
 		mText = e;
 		mMod = m;
-		display = mText.getText();
 	}
-	private String getButtonText(View v) {
+	private String getString(View v) {
 		return ((Button)v).getText().toString();
+	}
+	private String getString(EditText e) {
+		return e.getText().toString();
 	}
 	private int getTextVal(String str) {
 		return Integer.parseInt(str);
@@ -26,6 +28,7 @@ public class InputHandler implements OnClickListener{
 		mMod.setOperand(temp*10+digit);
 	}
 	private void updateOperation(int id) {
+		CharSequence display = mText.getText();
 		if (id == R.id.buttonBACK) {
 			mText.setText(display.subSequence(0, display.length()-1));
 			return;
@@ -33,15 +36,16 @@ public class InputHandler implements OnClickListener{
 		mText.setText("");
 		switch(id) {
 		case R.id.buttonMULTIPLY:
-			mMod.setOperand(id);
+			mOp = '*';
 			break;
 		case R.id.buttonADD:
-			mMod.setOperand(id);
+			mOp = '+';
 			break;
 		case R.id.buttonMINUS:
-			mMod.setOperand(id);
+			mOp = '-';
 			break;
 		}
+		mMod.setOperand(mOp);
 		mText.setText(mMod.showResult());
 	}
 	public boolean isInteger(String str) {
@@ -54,13 +58,13 @@ public class InputHandler implements OnClickListener{
 	}
 	@Override
 	public void onClick(View v) {
-		if(isInteger(getButtonText(v))) {
-			int val = getTextVal(display.toString());
-			updateNum(getTextVal(getButtonText(v)),val);
+		int val = 0;
+		if(isInteger(getString(v))) {
+			val = getTextVal(getString(mText));
+			updateNum(getTextVal(getString(v)),val);
 		} else {			
 			updateOperation(v.getId());
-			mMod.calculate();
+			mMod.calculate(val);
 		}
 	}
-	
 }
