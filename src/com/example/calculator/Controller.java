@@ -1,5 +1,5 @@
 package com.example.calculator;
-import android.util.Log;
+//import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -28,9 +28,30 @@ public class Controller implements OnClickListener{
 		mText.setText(mMod.showResult());
 		//	Log.d("debug", "current value: " + curr + "\t result: " + mMod.showResult());
 	}
+	private void checkOperator(int id) {
+		switch(id) {
+		case R.id.buttonCLEAR:
+			mMod.setOperator('!');
+			mText.setText("");
+			break;    		     
+		case R.id.buttonADD:
+			mMod.setOperator('+');
+			break;
+		case R.id.buttonMINUS:
+			mMod.setOperator('-');
+			break;
+		case R.id.buttonMULTIPLY:
+			mMod.setOperator('*');
+			break;
+		}
+	}
+	private String getString(Object obj) {
+		if (obj.equals((Button)obj))	return ((Button)obj).getText().toString();
+		else	return ((EditText)obj).getText().toString();
+	}
 	@Override
 	public void onClick(View v) {
-		CharSequence ch = ((Button)v).getText().toString();
+		CharSequence ch = getString((Button)v);
 		if (isInteger(ch.toString())) {
 			if(mClearText) {
 				mText.setText("");
@@ -39,27 +60,13 @@ public class Controller implements OnClickListener{
 			mText.append(ch);
 		} else {
 			if (v.getId() == R.id.buttonEQUALS) {
-				curr = Integer.parseInt(mText.getText().toString());
+				curr = Integer.parseInt(getString(mText));
 				updateDisplay();
 			} else {
 				//			Log.d("debug", "text is: "+ mText.getText().toString());
 				curr = Integer.parseInt(mText.getText().toString());
 				mMod.setOperand(curr);
-				switch(v.getId()) {
-				case R.id.buttonClear:
-					mMod.setOperator('!');
-					mText.setText("");
-					break;    		     
-				case R.id.buttonADD:
-					mMod.setOperator('+');
-					break;
-				case R.id.buttonMINUS:
-					mMod.setOperator('-');
-					break;
-				case R.id.buttonMULTIPLY:
-					mMod.setOperator('*');
-					break;
-				}
+				checkOperator(v.getId());
 				mClearText = true;
 			}
 		}

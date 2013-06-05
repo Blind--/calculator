@@ -31,9 +31,6 @@ public class Model {
 			case '*':
 				res = mOper * operand;
 				break;
-			case '/':
-				res = mOper / operand;
-				break;
 		}
 	}
 	public String showResult() {

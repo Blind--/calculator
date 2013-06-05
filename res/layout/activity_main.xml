@@ -21,11 +21,18 @@
        android:orientation="horizontal"
        android:weightSum="1.0" >
        <Button
-           android:id="@+id/buttonClear"
+           android:id="@+id/buttonCLEAR"
            android:layout_width="0dp"
            android:layout_height="fill_parent"
-           android:layout_weight="1.0"
+           android:layout_weight="0.5"
            android:text="@string/clr"
+           android:textSize="30sp" />
+       <Button
+           android:id="@+id/buttonBACK"
+           android:layout_width="0dp"
+           android:layout_height="fill_parent"
+           android:layout_weight="0.5"
+           android:text="@string/back"
            android:textSize="30sp" />
    </LinearLayout>
    <LinearLayout
@@ -147,18 +154,18 @@
        android:orientation="horizontal"
        android:weightSum="1.0">
        <Button
-           android:id="@+id/buttonEQUALS"
-           android:layout_width="50dp"
-           android:layout_height="fill_parent"
-           android:layout_weight=".75"
-           android:text="="
-           android:textSize="30sp" />
-       <Button
            android:id="@+id/button0"
            android:layout_width="50dp"
            android:layout_height="fill_parent"
            android:layout_weight=".25"
            android:text="0"
            android:textSize="30sp" />
+       <Button
+           android:id="@+id/buttonEQUALS"
+           android:layout_width="50dp"
+           android:layout_height="fill_parent"
+           android:layout_weight=".75"
+           android:text="="
+           android:textSize="30sp" />       
    </LinearLayout>
 </LinearLayout>
