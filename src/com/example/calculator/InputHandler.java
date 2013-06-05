@@ -9,6 +9,7 @@ public class InputHandler implements OnClickListener{
 	private EditText mText;
 	private CalculatorModel mMod;
 	private char mOp;
+	private int val;
 	
 	public InputHandler(EditText e, CalculatorModel m) {
 		mText = e;
@@ -23,10 +24,7 @@ public class InputHandler implements OnClickListener{
 	private int getTextVal(String str) {
 		return Integer.parseInt(str);
 	}
-	private void updateNum(int digit, int temp) {
-		mText.append(digit+"");
-		mMod.setOperand(temp*10+digit);
-	}
+	
 	private void updateOperation(int id) {
 		CharSequence display = mText.getText();
 		if (id == R.id.buttonBACK) {
@@ -58,11 +56,11 @@ public class InputHandler implements OnClickListener{
 	}
 	@Override
 	public void onClick(View v) {
-		int val = 0;
 		if(isInteger(getString(v))) {
+			mText.append(getString(v));
 			val = getTextVal(getString(mText));
-			updateNum(getTextVal(getString(v)),val);
 		} else {			
+			mMod.setOperand(val);
 			updateOperation(v.getId());
 			mMod.calculate(val);
 		}

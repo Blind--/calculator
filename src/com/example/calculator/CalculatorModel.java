@@ -7,7 +7,7 @@ public class CalculatorModel {
 		res = 0;
 	}
 	public void setOperand(int i) {
-		mOperand = i;
+		mOperand = mOperand*10 + i;
 	}
 	public void setOperator(char operator) {
 		mOperator = operator;

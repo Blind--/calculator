@@ -28,12 +28,14 @@ public class Controller implements OnClickListener{
 		mText.setText(mMod.showResult());
 		//	Log.d("debug", "current value: " + curr + "\t result: " + mMod.showResult());
 	}
-	private void checkOperator(int id) {
+	public void checkOperator(int id) {
 		switch(id) {
 		case R.id.buttonCLEAR:
 			mMod.setOperator('!');
 			mText.setText("");
-			break;    		     
+			break;    		
+		case R.id.buttonBACK:
+			mText.setText((curr-curr%10)/10);
 		case R.id.buttonADD:
 			mMod.setOperator('+');
 			break;
@@ -43,15 +45,21 @@ public class Controller implements OnClickListener{
 		case R.id.buttonMULTIPLY:
 			mMod.setOperator('*');
 			break;
+		case R.id.buttonEQUALS:
+			curr = getTextNum(mText);
+			updateDisplay();
 		}
+		mMod.setOperand(curr);
 	}
-	private String getString(Object obj) {
-		if (obj.equals((Button)obj))	return ((Button)obj).getText().toString();
-		else	return ((EditText)obj).getText().toString();
+	private int getTextNum(EditText e) {
+		return Integer.parseInt(mText.getText().toString());
+	}
+	private CharSequence getText(Button b) {
+		return b.getText().toString();
 	}
 	@Override
 	public void onClick(View v) {
-		CharSequence ch = getString((Button)v);
+		CharSequence ch = getText((Button)v);
 		if (isInteger(ch.toString())) {
 			if(mClearText) {
 				mText.setText("");
@@ -59,16 +67,8 @@ public class Controller implements OnClickListener{
 			}
 			mText.append(ch);
 		} else {
-			if (v.getId() == R.id.buttonEQUALS) {
-				curr = Integer.parseInt(getString(mText));
-				updateDisplay();
-			} else {
-				//			Log.d("debug", "text is: "+ mText.getText().toString());
-				curr = Integer.parseInt(mText.getText().toString());
-				mMod.setOperand(curr);
-				checkOperator(v.getId());
-				mClearText = true;
-			}
+			checkOperator(v.getId());
+			mClearText = true;
 		}
 	}
 }
