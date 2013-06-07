@@ -10,6 +10,7 @@ public class CalculatorModel {
 	}
 	public void setOperand(int operand) {
 		mOperand = operand;
+		Log.d("debug", "operand in model: " + mOperand);
 	}
 	public void setOperator(char operator) {
 		mOperator = operator;

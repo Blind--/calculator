@@ -11,13 +11,11 @@ import android.widget.EditText;
 public class InputHandler implements OnClickListener{
 	private EditText mText;
 	private CalculatorModel mMod;
-	private Stack<String> hist;
 	private char mOp;
 	
 	public InputHandler(EditText e, CalculatorModel m) {
 		mText = e;
 		mMod = m;
-		hist = new Stack<String>();
 	}
 	//Overload1 : View
 	private String getString(View v) {
@@ -39,6 +37,7 @@ public class InputHandler implements OnClickListener{
 		return true;
 	}
 	private void updateBACK() {
+		//mText.setText(hist.peep());
 		CharSequence display = mText.getText();
 		mText.setText(display.subSequence(0, display.length()-1));
 	}
@@ -47,14 +46,15 @@ public class InputHandler implements OnClickListener{
 	}
 	private void updateOperation() {
 		mMod.setOperator(mOp);
-		Log.d("debug", "operator in control: " + mOp);
 	}
 	private void processInput(int id) {
-		if (id == R.id.buttonBACK) {
+		switch(id) {
+		case R.id.buttonBACK:
 			updateBACK();
 			return;
-		}
-		switch(id) {
+		case R.id.buttonCLEAR:
+			updateCLEAR();
+			break;
 		case R.id.buttonMULTIPLY:
 			mOp = '*';
 			break;
@@ -64,28 +64,31 @@ public class InputHandler implements OnClickListener{
 		case R.id.buttonMINUS:
 			mOp = '-';
 			break;
-		case R.id.buttonEQUALS:
-			updateCLEAR();
-			updateDisplay();
 		}
+		mMod.setOperand(getCurrVal());
 		updateOperation();
 	}	
 	private void updateDisplay() {
-		mMod.calculate(Integer.parseInt(hist.peek()));
+		mMod.calculate(getCurrVal());
 		mText.setText(mMod.toString());
 	}
-	
+	private boolean mClearText;
 	@Override
 	public void onClick(View v) {
 		if(isInteger(getString(v))) {
-			if (!hist.empty() && !hist.peek().equals(null))//error1
+			if(mClearText) {
 				updateCLEAR();
+				mClearText = false;
+			}
 			mText.append(getString(v));
-			hist.push(getString(v));//error2
-		} else {			
-			//deal with non-operation buttons
-			mMod.setOperand(getCurrVal());
-			processInput(v.getId());
+		} else {		
+			if(v.getId() == R.id.buttonEQUALS) {
+				updateDisplay();
+			} else {
+				mMod.setOperand(getCurrVal());
+				processInput(v.getId());	// store operator and deal with clr,back
+				mClearText = true;
+			}
 		}
 	}
 }
