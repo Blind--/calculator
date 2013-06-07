@@ -5,9 +5,10 @@ public class CalculatorModel {
 	private char mOperator;
 	public CalculatorModel() {
 		res = 0;
+		mOperand = 0;
 	}
-	public void setOperand(int i) {
-		mOperand = mOperand*10 + i;
+	public void setOperand(int operand) {
+		mOperand = operand;
 	}
 	public void setOperator(char operator) {
 		mOperator = operator;
@@ -25,7 +26,8 @@ public class CalculatorModel {
 			break;
 		}
 	}
-	public String showResult() {
+	@Override
+	public String toString() {
 		return res + "";
 	}
 }
