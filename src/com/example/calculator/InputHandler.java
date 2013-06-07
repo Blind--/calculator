@@ -2,6 +2,7 @@ package com.example.calculator;
 
 import java.util.Stack;
 
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -18,14 +19,16 @@ public class InputHandler implements OnClickListener{
 		mMod = m;
 		hist = new Stack<String>();
 	}
+	//Overload1 : View
 	private String getString(View v) {
 		return ((Button)v).getText().toString();
 	}
+	//Overload2 : EditText
 	private String getString(EditText e) {
 		return e.getText().toString();
 	}
-	private int getStringVal(String str) {
-		return Integer.parseInt(str);
+	private int getCurrVal() {
+		return Integer.parseInt(getString(mText));
 	}
 	public boolean isInteger(String str) {
 		try { 
@@ -44,6 +47,7 @@ public class InputHandler implements OnClickListener{
 	}
 	private void updateOperation() {
 		mMod.setOperator(mOp);
+		Log.d("debug", "operator in control: " + mOp);
 	}
 	private void processInput(int id) {
 		if (id == R.id.buttonBACK) {
@@ -67,21 +71,21 @@ public class InputHandler implements OnClickListener{
 		updateOperation();
 	}	
 	private void updateDisplay() {
-		mMod.calculate(getStringVal(getString(mText)));
+		mMod.calculate(Integer.parseInt(hist.peek()));
 		mText.setText(mMod.toString());
 	}
+	
 	@Override
 	public void onClick(View v) {
 		if(isInteger(getString(v))) {
-			if (!isInteger(hist.peek()) && !hist.empty()) // ERROR LINE
+			if (!hist.empty() && !hist.peek().equals(null))//error1
 				updateCLEAR();
-			else mText.append(getString(v));
+			mText.append(getString(v));
+			hist.push(getString(v));//error2
 		} else {			
 			//deal with non-operation buttons
-			int val = getStringVal(getString(mText));
-			mMod.setOperand(val);
+			mMod.setOperand(getCurrVal());
 			processInput(v.getId());
 		}
-		hist.push(getString(v));
 	}
 }
