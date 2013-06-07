@@ -1,5 +1,7 @@
 package com.example.calculator;
 
+import java.util.Stack;
+
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -8,11 +10,13 @@ import android.widget.EditText;
 public class InputHandler implements OnClickListener{
 	private EditText mText;
 	private CalculatorModel mMod;
+	private Stack<String> hist;
 	private char mOp;
 	
 	public InputHandler(EditText e, CalculatorModel m) {
 		mText = e;
 		mMod = m;
+		hist = new Stack<String>();
 	}
 	private String getString(View v) {
 		return ((Button)v).getText().toString();
@@ -39,14 +43,13 @@ public class InputHandler implements OnClickListener{
 		mText.setText("");
 	}
 	private void updateOperation() {
-		mMod.setOperand(mOp);
+		mMod.setOperator(mOp);
 	}
 	private void processInput(int id) {
 		if (id == R.id.buttonBACK) {
 			updateBACK();
 			return;
 		}
-		updateCLEAR();
 		switch(id) {
 		case R.id.buttonMULTIPLY:
 			mOp = '*';
@@ -58,6 +61,7 @@ public class InputHandler implements OnClickListener{
 			mOp = '-';
 			break;
 		case R.id.buttonEQUALS:
+			updateCLEAR();
 			updateDisplay();
 		}
 		updateOperation();
@@ -69,12 +73,15 @@ public class InputHandler implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		if(isInteger(getString(v))) {
-			mText.append(getString(v));
+			if (!isInteger(hist.peek()) && !hist.empty()) // ERROR LINE
+				updateCLEAR();
+			else mText.append(getString(v));
 		} else {			
-			//needs to deal with Back and Clear (they are not operations)
+			//deal with non-operation buttons
 			int val = getStringVal(getString(mText));
 			mMod.setOperand(val);
 			processInput(v.getId());
 		}
+		hist.push(getString(v));
 	}
 }
